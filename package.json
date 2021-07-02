@@ -4,11 +4,14 @@
   "description": "Nodejs project",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "nodemon app.js"
   },
   "author": "Serhii Kovalenko",
   "license": "MIT",
   "devDependencies": {
     "nodemon": "^2.0.9"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
