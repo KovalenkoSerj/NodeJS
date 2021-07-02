@@ -1,0 +1,14 @@
+{
+  "name": "test_project",
+  "version": "1.0.0",
+  "description": "Nodejs project",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Serhii Kovalenko",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^2.0.9"
+  }
+}
