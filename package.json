@@ -1,17 +1,26 @@
 {
-  "name": "test_project",
+  "name": "express-task",
   "version": "1.0.0",
-  "description": "Nodejs project",
+  "description": "Express task",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KovalenkoSerj/NodeJS.git"
   },
   "author": "Serhii Kovalenko",
   "license": "MIT",
-  "devDependencies": {
-    "nodemon": "^2.0.9"
+  "bugs": {
+    "url": "https://github.com/KovalenkoSerj/NodeJS/issues"
   },
+  "homepage": "https://github.com/KovalenkoSerj/NodeJS#readme",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.9"
   }
 }
