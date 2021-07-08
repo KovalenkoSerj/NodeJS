@@ -1,21 +1,20 @@
-const routes = require('./routes')
 const express = require('express');
-
 const app = express();
-
-app.use('/', (req, res, next) => {
-    console.log('In the product middleware');
-    res.send('<h1>Hello from express</h1>')
-})
-
-
-app.use('/product', (req, res, next) => {
-    console.log('In the next middleware');
-    res.send('<h1>Hello from product</h1>')
-})
+const bodyParser = require('body-parser');
+const initialPage = require('./routers/initialpage');
+const usersPage = require('./routers/users')
+const rootDir = require('./util/rootDir')
+const path = require('path')
+const port = 3000;
 
 
+app.use(bodyParser.urlencoded({extended: false}));
+
+app.use(express.static(path.join(__dirname, 'public')))
+
+app.use('/admin', usersPage);
+app.use('/', initialPage)
 
 
 
-app.listen(3000)
+app.listen(port)
