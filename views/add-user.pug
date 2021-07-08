@@ -1,0 +1,22 @@
+extends layouts/main-layout.pug
+
+block styles
+    link(rel="stylesheet", href="/css/main.css")
+    link(rel="stylesheet", href="/css/users.css")
+    link(rel="stylesheet", href="/css/forms.css")
+    
+block content 
+    main 
+        form(action='/admin/add-user', method="POST", class='user-form')
+            .form-control   
+                label(for="username") First Name
+                input(type="text", name='username', id='username')
+
+                label(for="lastname") Last Name
+                input(type="text", name='lastname', id='lastname')
+
+                label(for="email") Email
+                input(type="text", name='email', id='email')
+                        
+                        
+                button.btn(type='submit') Add User

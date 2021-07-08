@@ -4,16 +4,14 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title #{docTitle} 
-        link(rel="stylesheet", href="/css/main.css")
+        title #{docTitle}
         block styles
-    body 
+    body  
         header.main-header
             nav.main-header__nav
                 ul.main-header__item-list
                     li.main-header__item 
-                        a(href="/", class=(path === '/' ? 'active' : '')) Shop
+                        a(href="/", class=(path === '/' ? 'active' : '')) Users
                     li.main-header__item
-                        a(href="/admin/add-product", class=(path === '/admin/add-product' ? 'active' : '')) Add Product
-    
-    block content
+                        a(href="/admin/add-user", class=(path === '/admin/add-user' ? 'active' : '')) Add User
+        block content
