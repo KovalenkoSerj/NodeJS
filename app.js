@@ -1,20 +1,24 @@
-const express = require('express');
-const app = express();
-const bodyParser = require('body-parser');
-const initialPage = require('./routers/initialpage');
-const usersPage = require('./routers/users')
-const rootDir = require('./util/rootDir')
-const path = require('path')
-const port = 3000;
+const path = require('path');
 
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
+
+app.set('view engine', 'pug');
+app.set('views', 'views');
+
+const adminData = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
 
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(express.static(path.join(__dirname, 'public')))
+app.use('/admin', adminData.routes);
+app.use(shopRoutes);
 
-app.use('/admin', usersPage);
-app.use('/', initialPage)
+app.use((req, res, next) => {
+    res.status(404).render('404');
+});
 
-
-
-app.listen(port)
+app.listen(3000);
