@@ -19,9 +19,9 @@ router.get("/products", getProducts);
 
 router.get("/products/:productId", getProductDetails);
 
-router.get("/cart", getCart);
-
 router.post("/cart", postCart);
+
+router.get("/cart", getCart);
 
 router.get("/checkout", getCheckout);
 
