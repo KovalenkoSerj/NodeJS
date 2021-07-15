@@ -1,1 +1,24 @@
 extends ../layout/main-layout
+
+
+block content 
+    main 
+        if products.length > 0
+            .grid
+                each product in products
+                    article.card.product-item    
+                        header.card__header 
+                            h1.product__title #{product.productData.title}
+                        div.card__image
+                            img(src=product.productData.imageUrl, alt="A book")
+                        div.card-contet
+                            h2.product__price Price: #{product.productData.price} $
+                            p.product__description Description: #{product.productData.description}
+                            p Quantity: #{product.qty}
+                        .card__actions
+                            a(href="/products/" + product.id, class="btn") Details 
+                            form(action="/cart-delete-item" method="POST")
+                                button.btn(type="submit") Delete From Cart
+                                input(type="hidden" name='productId' value=product.productData.id)
+        else
+            h1 Cart is empty
