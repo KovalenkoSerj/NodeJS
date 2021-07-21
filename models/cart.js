@@ -71,7 +71,7 @@ module.exports = class Cart {
             const cart = JSON.parse(filecontent);
             if(err){
                 cb([])
-            }else {
+            }else {  
                 cb(cart)
             }
         })

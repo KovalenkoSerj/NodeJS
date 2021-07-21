@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const errorPageController = require('./controllers/404')
 
 const app = express();
+const db = require('./util/database');
+
 
 app.set('view engine', 'pug');
 app.set('views', 'views');
