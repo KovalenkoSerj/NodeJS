@@ -9,23 +9,41 @@ exports.getProducts = (req, res, next) => {
   //     path: "/products",
   //   });
   // });
-  Product.fetchAll()
-    .then(([rows, fieldData]) => {
-      res.render("shop/product-list", {
-        prods: rows,
-        docTitle: "All Products",
-        path: "/products"
-      });
-    })
-    .catch((err) => console.log(err));
+  Product.findAll().then(products => {
+    res.render('shop/product-list', {
+      prods: products,
+      docTitle: 'All Products list',
+      path: '/products '
+    }) 
+  }).catch(err => console.log(err))
+  // Product.fetchAll()
+  //   .then(([rows, fieldData]) => {
+  //     res.render("shop/product-list", {
+  //       prods: rows,
+  //       docTitle: "All Products",
+  //       path: "/products"
+  //     });
+  //   })
+  //   .catch((err) => console.log(err));
 };
 
 exports.getProductDetails = (req, res, next) => {
   const prodId = req.params.productId;
-  Product.findById(prodId)
-    .then(([product]) => {
+  Product.findByPk(prodId)
+  // Product.findAll({where: {
+  //   id: prodId
+  // }}).then(products => {
+  //   res.render("shop/product-details", {
+  //         prods: products[0],
+  //         doctTitle: products[0].title,
+  //         path: "/products"
+  //       });
+  // })
+    .then(product => {
+        // .then(([product]) => {
+
       res.render("shop/product-details", {
-        prods: product[0],
+        prods: product,
         doctTitle: product.title,
         path: "/products"
       });
@@ -34,15 +52,22 @@ exports.getProductDetails = (req, res, next) => {
 };
 
 exports.getIndex = (req, res) => {
-  Product.fetchAll()
-    .then(([rows, fieldData]) => {
-      res.render("shop/index", {
-        prods: rows,
-        docTitle: "Product List",
-        path: "/"
-      });
-    })
-    .catch(err => console.log(err))
+  Product.findAll().then(products => {
+    res.render('shop/index', {
+      prods: products,
+      docTitle: 'Shop',
+      path: '/'
+    }) 
+  }).catch(err => console.log(err))
+  // Product.fetchAll()
+  //   .then(([rows, fieldData]) => {
+  //     res.render("shop/index", {
+  //       prods: rows,
+  //       docTitle: "Product List",
+  //       path: "/"
+  //     });
+  //   })
+  //   .catch(err => console.log(err))
 };
 
 exports.getCart = (req, res) => {
