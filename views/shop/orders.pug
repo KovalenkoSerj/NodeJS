@@ -1,5 +1,22 @@
 extends ../layout/main-layout.pug
 
+block styles 
+    link(rel="stylesheet", href="/css/main.css")
+    link(rel="stylesheet", href="/css/product.css")
 block content
-    main 
-        h1 Nothing Here 
+    main
+        if orders.length > 0
+            .grid
+                each order in orders
+                    article.card.product-item    
+                        header.card__header 
+                            h1.product__title #{order.id}
+                            p #{order.createdAt.getMonth() + 1}/#{order.createdAt.getDate()}/#{order.createdAt.getFullYear()} - #{order.createdAt.toLocaleTimeString()}
+                            each prod in order.products 
+                                p Title: #{prod.title}
+                                img(src=prod.imageUrl width=250 height=300)
+                                p Price: #{prod.price}                            
+                                
+                           
+        else 
+            h1 Nothing Here

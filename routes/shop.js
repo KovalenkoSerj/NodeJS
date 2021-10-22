@@ -7,11 +7,12 @@ const {
   getProducts,
   getIndex,
   getCart,
-  getCheckout,
+  // getCheckout,
   getOrders,
   getProductDetails,
   postCart,
-  postCartDeleteProduct
+  postCartDeleteProduct,
+  postOrder
 } = require("../controllers/shop");
 
 router.get("/", getIndex);
@@ -24,7 +25,9 @@ router.post("/cart", postCart);
 
 router.get("/cart", getCart);
 
-router.get("/checkout", getCheckout);
+router.post("/create-order", postOrder);
+
+// router.get("/checkout", getCheckout);
 
 router.get("/orders", getOrders);
 

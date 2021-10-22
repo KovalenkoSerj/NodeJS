@@ -10,7 +10,7 @@ block content
                         header.card__header 
                             h1.product__title #{product.title}
                         div.card__image
-                            img(src=product.imageUrl, alt="A book")
+                            img(src=product.imageUrl, width='150' height='300' alt="A book")
                         div.card-contet
                             h2.product__price Price: #{product.price} $
                             p.product__description Description: #{product.description}
@@ -20,5 +20,9 @@ block content
                             form(action="/cart-delete-item" method="POST")
                                 button.btn(type="submit") Delete From Cart
                                 input(type="hidden" name='productId' value=product.id)
+            hr                
+            div.centered                    
+                form(action="/create-order" method="POST")
+                    button.btn(type='submit') Order Now!              
         else
             h1 Cart is empty
