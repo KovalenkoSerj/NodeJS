@@ -1,34 +1,110 @@
+// const Sequelize = require('sequelize');
 
-const Sequelize = require('sequelize');
+// const sequelize = require('../util/database');
+const mongodb = require('mongodb');
+const mongoConnect = require('../util/database');
 
-const sequelize = require('../util/database');
+class Product {
+  constructor(title, price, description, imageUrl, id) {
+    this.title = title;
+    this.price = price;
+    this.description = description;
+    this.imageUrl = imageUrl;
+    this._id = id ? new mongodb.ObjectId(id) : null;
+  }
 
-const Product = sequelize.define('product', {
-   id: {
-     type: Sequelize.INTEGER,
-     autoIncrement: true,
-     allowNull: false,
-     primaryKey: true
-   },
-   title: {
-     type: Sequelize.STRING,
-     allowNull: false
-   },
-   price: {
-     type: Sequelize.DOUBLE,
-     allowNull: false
-   },
-   imageUrl : {
-     type: Sequelize.STRING,
-     allowNull: false
-   },
-   description: {
-     type: Sequelize.STRING,
-     allowNull: false
-   }
-});
+  async save() {
+    const db = await mongoConnect();
+    let object;
+    try {
+      if (this._id) {
+        object = await db.collection('products').updateOne({
+          _id: this._id
+        }, {
+          $set: this
+        })
+        console.log('Product Updated')
+      } else {
+        object = await db.collection('products').insertOne(this)
+        console.log('Product Inserted', object)
+      }
+    } catch (error) {
+      console.log('Insert/Update Error', error.message)
+    }
+    return object
+  }
+
+  static async fetchAll() {
+    let products;
+    try {
+      const db = await mongoConnect();
+      products = await db.collection('products').find().toArray();
+    } catch (error) {
+      console.log('Fetching Error', error.message)
+    }
+
+    return products;
+  }
+
+
+  static async findById(id) {
+    let product;
+    try {
+      const db = await mongoConnect();
+      const objId = new mongodb.ObjectId(id)
+      product = await db.collection('products').findOne({
+        _id: objId
+      })
+    } catch (error) {
+      console.log('Fetching Product Id Error', error.message)
+    }
+    return product;
+  }
+
+  static async deleteById(id) {
+    let product;
+    try {
+      const db = await mongoConnect();
+      const objId = new mongodb.ObjectId(id)
+      product = await db.collection('products').deleteOne({
+        _id: objId
+      })
+    } catch (error) {
+      console.log('Error during deleting product ', error.message)
+    }
+  }
+}
+
+
+
 
 module.exports = Product;
+
+// const Product = sequelize.define('product', {
+//    id: {
+//      type: Sequelize.INTEGER,
+//      autoIncrement: true,
+//      allowNull: false,
+//      primaryKey: true
+//    },
+//    title: {
+//      type: Sequelize.STRING,
+//      allowNull: false
+//    },
+//    price: {
+//      type: Sequelize.DOUBLE,
+//      allowNull: false
+//    },
+//    imageUrl : {
+//      type: Sequelize.STRING,
+//      allowNull: false
+//    },
+//    description: {
+//      type: Sequelize.STRING,
+//      allowNull: false
+//    }
+// });
+
 
 // // const fs = require('fs');
 // // const path = require('path');
@@ -104,5 +180,3 @@ module.exports = Product;
 //   // })
 //   // }
 // };
-
-

@@ -11,8 +11,8 @@ block content
 		hr
 		div 
 			img(src=prods.imageUrl, alt=prods.title, width=240, height=320)
-		h2 #{prods.price}
-		p #{prods.description}
+		h2 Price : #{prods.price}
+		p Description : #{prods.description}
 		form(action="/cart" method="POST")
 			button.btn(type="submit") Add to cart
-			input(type="hidden" name='productId' value=prods.id)
+			input(type="hidden" name='productId' value=prods._id)

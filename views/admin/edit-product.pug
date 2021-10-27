@@ -23,7 +23,7 @@ block content
 					label(for="desctiption") Description
 					textarea(name='description', id='description', rows="5" ,) #{ product.description}
 
-					input(type="hidden", value=product.id, name='productId')
+					input(type="hidden", value=product._id, name='productId')
 					button.btn(type='submit') #{btnTitle}
 		else
 			form(action='/admin/add-product', method="POST", class='product-form')
