@@ -14,7 +14,7 @@ block content
                         div.card-contet
                             h2.product__price Price: #{product.price} $
                             p.product__description Description: #{product.description}
-                            p Quantity: #{product.cartItem.quantity}
+                            p Quantity: #{product.quantity}
                         .card__actions
                             a(href="/products/" + product._id, class="btn") Details 
                             form(action="/cart-delete-item" method="POST")

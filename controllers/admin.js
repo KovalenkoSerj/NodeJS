@@ -25,7 +25,7 @@ exports.addProduct = async (req, res, next) => {
   const description = req.body.description;
   try {
 
-    const product = new Product(title, price, description, imageUrl)
+    const product = new Product(title, price, description, imageUrl, null, req.user._id)
     const object_id = await product.save()
     res.redirect('/')
   } catch (error) {
