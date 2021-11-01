@@ -1,5 +1,8 @@
-const { ObjectId } = require("bson");
+
 const mongoConnect = require("../util/database");
+const mongodb = require('mongodb');
+
+const ObjectId = mongodb.ObjectId;
 
 class User {
   constructor(username, email, cart, id) {
@@ -130,7 +133,7 @@ class User {
 
   async getOrders() {
     const db = await mongoConnect();
-    return db
+    return await db
       .collection("orders")
       .find({ "user._id": new ObjectId(this._id) })
       .toArray()
