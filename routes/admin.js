@@ -9,7 +9,7 @@ const {
     deleteProduct
 } = require('../controllers/admin')
 
-// /admin/add-product => GET
+// // /admin/add-product => GET
 router.get('/add-product', getAddProduct);
 
 router.get('/products', getProducts);

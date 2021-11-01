@@ -1,16 +1,10 @@
 const Product = require("../models/product");
-// const Cart = require("../models/cart");
-// const Order = require("../models/order");
+
+
 exports.getProducts = async (req, res, next) => {
-  // const products = Product.fetchAll((products) => {
-  //   res.render("shop/product-list", {
-  //     prods: products,
-  //     docTitle: "All Products",
-  //     path: "/products",
-  //   });
-  // });
+
   try {
-    const products = await Product.fetchAll();
+    const products = await Product.find();
     res.render("shop/product-list", {
       prods: products,
       docTitle: "All Products list",
@@ -77,7 +71,7 @@ exports.getProductDetails = async (req, res, next) => {
 
 exports.getIndex = async (req, res) => {
   try {
-    const products = await Product.fetchAll();
+    const products = await Product.find();
     res.render("shop/index", {
       prods: products,
       docTitle: "Shop",
