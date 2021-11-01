@@ -8,11 +8,11 @@ const {
   getIndex,
   getCart,
   // // getCheckout,
-  // getOrders,
+  getOrders,
   getProductDetails,
   postCart,
   postCartDeleteProduct,
-  // postOrder
+  postOrder
 } = require("../controllers/shop");
 
 router.get("/", getIndex);
@@ -25,11 +25,11 @@ router.post("/cart", postCart);
 
 router.get("/cart", getCart);
 
-// router.post("/create-order", postOrder);
+router.post("/create-order", postOrder);
 
 // router.get("/checkout", getCheckout);
 
-// router.get("/orders", getOrders);
+router.get("/orders", getOrders);
 
 router.post("/cart-delete-item", postCartDeleteProduct);
 
