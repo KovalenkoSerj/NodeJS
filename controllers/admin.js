@@ -25,7 +25,8 @@ exports.addProduct = async (req, res, next) => {
       title,
       imageUrl,
       price,
-      description
+      description,
+      userId: req.user[0]
     });
     const object_id = await product.save();
     console.log("Product created", object_id);

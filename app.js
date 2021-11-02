@@ -20,38 +20,37 @@ app.use(
   })
 );
 
+
 app.use(express.static(path.join(__dirname, "public")));
 
-// app.use( async (req, res, next) => {
-//   const user = await User.findByEmail('qwer@qwer.com');
-//   req.user = new User(user.name, user.email, user.cart, user._id )
-//   next()
-// })
+app.use( async (req, res, next) => {
+  const user = await User.find({email: 'qwer@qwer.com'});
+  req.user = user;
+  next()
+})
 
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 app.use(loginRoutes);
 
-// mongoConnect()
-
-// const start = async () =>  {
-//   try {
-//     await mongoConnect();
-//     console.log('Database connected successfully!')
-//     app.listen(3000)
-//   } catch (error) {
-//     console.log('Server error', error.message)
-//     process.exit(1)
-//   }
-// }
-
-// start()
 
 async function connect() {
   try {
     const db = await mongoose.connect(
       "mongodb+srv://serhii:rootroot@cluster0.n6xnp.mongodb.net/shop?retryWrites=true&w=majority"
     );
+    const findUser = await User.findOne();
+    if(!findUser){
+      const user = new User({
+        name: 'Serhii',
+        email: 'qwer@qwer.com',
+        cart: {
+          items: []
+        }
+      })
+      user.save()
+    }
+   
     app.listen(3000);
   } catch (error) {
     console.log("Server Error", error.message);
@@ -59,3 +58,8 @@ async function connect() {
 }
 
 connect();
+
+
+app.use(function(req,res){
+  res.status(404).render('404');
+});

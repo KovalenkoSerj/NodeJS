@@ -8,18 +8,18 @@ block content
                 each product in products
                     article.card.product-item    
                         header.card__header 
-                            h1.product__title #{product.title}
+                            h1.product__title #{product.productId.title}
                         div.card__image
-                            img(src=product.imageUrl, width='150' height='300' alt="A book")
+                            img(src=product.productId.imageUrl, width='150' height='300' alt="A book")
                         div.card-contet
-                            h2.product__price Price: #{product.price} $
-                            p.product__description Description: #{product.description}
+                            h2.product__price Price: #{product.productId.price} $
+                            p.product__description Description: #{product.productId.description}
                             p Quantity: #{product.quantity}
                         .card__actions
-                            a(href="/products/" + product._id, class="btn") Details 
+                            a(href="/products/" + product.productId._id, class="btn") Details 
                             form(action="/cart-delete-item" method="POST")
                                 button.btn(type="submit") Delete From Cart
-                                input(type="hidden" name='productId' value=product._id)
+                                input(type="hidden" name='productId' value=product.productId._id)
             hr                
             div.centered                    
                 form(action="/create-order" method="POST")

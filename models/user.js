@@ -1,7 +1,67 @@
-
 // const mongoConnect = require("../util/database");
 // const mongodb = require('mongodb');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
+const userSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    cart: {
+        items: [{
+            productId: {
+                type: Schema.Types.ObjectId,
+                ref: 'Product',
+                required: true
+            },
+            quantity: {
+                type: Number,
+                required: true
+            }
+        }]
+    }
+})
+
+userSchema.methods.addToCart = async function (product) {
+    const cartProduct = this.cart.items.findIndex((cp) => {
+        return cp.productId.toString() === product._id.toString();
+    });
+    let newQty = 1;
+    const updCartItems = [...this.cart.items];
+    if (cartProduct >= 0) {
+        newQty = this.cart.items[cartProduct].quantity + 1;
+        updCartItems[cartProduct].quantity = newQty;
+    } else {
+        updCartItems.push({
+            productId: product._id,
+            quantity: newQty
+        });
+    }
+    const updCart = {
+        items: updCartItems
+    };
+    this.cart = updCart;
+    return await this.save();
+}
+
+userSchema.methods.removeFromCart = function (id) {
+    const updCart = this.cart.items.filter(
+        (p) => p.productId.toString() !== id.toString()
+    );
+    this.cart.items = updCart;
+    return this.save()
+}
+userSchema.methods.clearCart = function(){
+    this.cart = {items: []};
+    return this.save()
+}
+
+module.exports = mongoose.model('User', userSchema)
 // const ObjectId = mongodb.ObjectId;
 
 // class User {

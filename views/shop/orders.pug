@@ -10,13 +10,12 @@ block content
                 each order in orders
                     article.card.product-item    
                         header.card__header 
-                            h1.product__title #{order.title}
                             //- p #{order.createdAt.getMonth() + 1}/#{order.createdAt.getDate()}/#{order.createdAt.getFullYear()} - #{order.createdAt.toLocaleTimeString()}
-                            each prod in order.items 
-                                h1 Title: #{prod.title}
-                                img(src=prod.imageUrl width=250 height=300)
-                                p Price: #{prod.price}  
-                                p Quantity #{prod.quantity}                          
+                            each p in order.products 
+                                h1 Title: #{p.product.title}
+                                img(src=p.product.imageUrl width=250 height=300)
+                                p Price: #{p.product.price}  
+                                p Quantity #{p.quantity}                          
                                 
                            
         else 
