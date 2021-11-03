@@ -10,7 +10,9 @@ exports.getAddProduct = (req, res, next) => {
     btnTitle: "Submit",
     labelTitle: "Title",
     path: "/admin/edit-product",
-    editing: false
+    editing: false,
+    isAuthenticated: req.session.isLoggedIn
+
   });
 };
 
@@ -51,7 +53,9 @@ exports.getEditProduct = async (req, res, next) => {
       labelTitle: "Title",
       path: "/admin/edit-product",
       editing: editMode,
-      product: product
+      product: product,
+      isAuthenticated: req.session.isLoggedIn
+
     });
   } catch (error) {
     console.log("Edit product failed ", error.message);
@@ -85,7 +89,8 @@ exports.getProducts = async (req, res, next) => {
     res.render("admin/products", {
       prods: products,
       docTitle: "Admin Products",
-      path: "/admin/products"
+      path: "/admin/products",
+      isAuthenticated: req.session.isLoggedIn
     });
   } catch (error) {
     console.log("FETCH Error ", error.message);

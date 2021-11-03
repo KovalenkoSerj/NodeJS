@@ -13,6 +13,7 @@ block content
 			img(src=prods.imageUrl, alt=prods.title, width=240, height=320)
 		h2 Price : #{prods.price}
 		p Description : #{prods.description}
-		form(action="/cart" method="POST")
-			button.btn(type="submit") Add to cart
-			input(type="hidden" name='productId' value=prods._id)
+		if isAuthenticated
+			form(action="/cart" method="POST")
+				button.btn(type="submit") Add to cart
+				input(type="hidden" name='productId' value=prods._id)
