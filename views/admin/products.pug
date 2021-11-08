@@ -21,5 +21,8 @@ block content
                             form(action="/admin/delete-product", method="POST") 
                                 button.btn(type='submit') Delete
                                 input(type="hidden", name='productId', value=product._id)
+                                input(type="hidden", name='_csrf' value=`${csrfToken}`)
         else 
             h1 No products
+            input(type="hidden", name='_csrf' value=`${csrfToken}`)
+

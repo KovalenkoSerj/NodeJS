@@ -24,3 +24,4 @@ block content
                                     input(type="hidden" name='productId' value=product._id)
         else 
             h1 No products
+        input(type="hidden", name='_csrf' value=`${csrfToken}`)

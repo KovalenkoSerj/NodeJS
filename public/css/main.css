@@ -118,10 +118,21 @@ main {
   background: white;
   border-radius: 3px;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .btn:hover,
 .btn:active {
   background-color: #00695c;
   color: white;
+}
+
+
+.user-message {
+  margin: auto;
+  width: 30%;
+  border: 1px solid rgb(255, 91, 91);
+  background-color: rgb(255, 170, 170);
+  padding: 10px;
+  text-align: center;
 }

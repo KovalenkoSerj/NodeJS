@@ -6,6 +6,8 @@ const errorPageController = require("./controllers/404");
 const mongoose = require("mongoose");
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
+const csrf = require('csurf');
+const flash = require('connect-flash');
 
 const MONGODB_URI = 'mongodb+srv://serhii:rootroot@cluster0.n6xnp.mongodb.net/shop?retryWrites=true&w=majority';
 const app = express();
@@ -14,7 +16,7 @@ const store = new MongoDBStore({
   collection: 'sessions',
 });
 
-
+const csrfProtect = csrf()
 app.set("view engine", "pug");
 app.set("views", "views");
 
@@ -39,6 +41,15 @@ app.use(session({
   store: store
 }))
 
+
+app.use(csrfProtect)
+app.use(flash())
+
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isLoggedIn;
+  res.locals.csrfToken = req.csrfToken();
+  next();
+})
 // app.use(async (req, res, next) => {
 //   const user = await User.find({
 //     email: 'qwer@qwer.com'
@@ -46,19 +57,22 @@ app.use(session({
 //   req.user = user;
 //   next()
 // })
-app.use(async (req,res,next) => {
-  if(!req.session.user){
+app.use(async (req, res, next) => {
+  if (!req.session.user) {
     return next()
   }
   try {
-    const user = await User.findById(req.session.user[0]._id);
+    const user = await User.findById(req.session.user._id);
     req.user = user;
     next()
   } catch (error) {
-    console.log('Error during login user ' , error.message)
+    console.log('Error during login user ', error.message)
   }
- 
+
 })
+
+
+
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 app.use(loginRoutes);
@@ -69,18 +83,6 @@ async function connect() {
     const db = await mongoose.connect(
       MONGODB_URI
     );
-    const findUser = await User.findOne();
-    if (!findUser) {
-      const user = new User({
-        name: 'Serhii',
-        email: 'qwer@qwer.com',
-        cart: {
-          items: []
-        }
-      })
-      user.save()
-    }
-
     app.listen(3000);
   } catch (error) {
     console.log("Server Error", error.message);

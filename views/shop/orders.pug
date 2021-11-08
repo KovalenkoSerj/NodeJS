@@ -15,8 +15,12 @@ block content
                                 h1 Title: #{p.product.title}
                                 img(src=p.product.imageUrl width=250 height=300)
                                 p Price: #{p.product.price}  
-                                p Quantity #{p.quantity}                          
+                                p Quantity #{p.quantity}
+        
+                     
                                 
                            
         else 
             h1 Nothing Here
+    
+        input(type="hidden", name='_csrf' value=`${csrfToken}`)

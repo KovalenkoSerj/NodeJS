@@ -22,6 +22,7 @@ block content
 
 					label(for="desctiption") Description
 					textarea(name='description', id='description', rows="5" ,) #{ product.description}
+					input(type="hidden", name='_csrf' value=`${csrfToken}`)
 
 					input(type="hidden", value=product._id, name='productId')
 					button.btn(type='submit') #{btnTitle}
@@ -38,9 +39,8 @@ block content
 					input(type="number", name='price', id='price' step="0.01" )
 					label(for="desctiption") Description
 					textarea(name='description', id='description', rows="5" )
-
+					input(type="hidden", name='_csrf' value=`${csrfToken}`)
 					button.btn(type='submit') #{btnTitle}
-
 
 
 

@@ -1,5 +1,5 @@
 doctype html
-html(lang="en")
+html(lang="En")
     head
         meta(charset="UTF-8")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
@@ -27,10 +27,13 @@ html(lang="en")
                             a(href="/admin/products", class=(path === '/admin/products' ? 'active' : '')) Admin Products
                         li.main-header__item
                             form(action="/logout" , method='post') 
+                                input(type="hidden", name='_csrf' value=`${csrfToken}`)
                                 button(type='submit' ) Logout
                     if !isAuthenticated         
                         li.main-header__item
                             a(href="/login", class=(path === '/login' ? 'active' : '')) Login
+                        li.main-header__item
+                            a(href="/signup", class=(path === '/signup' ? 'active' : '')) Sign Up
                     
                        
     

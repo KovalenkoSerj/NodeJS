@@ -9,13 +9,13 @@ block content
     main
         if errorMsg.length > 0
             p(class='user-message user-message--error') #{errorMsg}
-        form(action='/login', method="POST", class='product-form')
+        form(action='/signup', method="POST", class='product-form')
             .form-control
                 label(for="email") Email
                 input(type="email", name='email', id='email')
                 label(for="password") Password
                 input(type="password", name='password', id='password')
+                label(for="password_confirm") Confirm Password
+                input(type="password_confirm", name='password_confirm', id='password_confirm')
                 input(type="hidden", name='_csrf' value=`${csrfToken}`)
-                button.btn(type='submit') Login
-    .centered
-        a.btn(href="/reset") Reset Password
+                button.btn(type='submit') SignUp 

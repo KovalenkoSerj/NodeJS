@@ -5,13 +5,13 @@ const mongodb = require("mongodb");
 const ObjectId = mongodb.ObjectId;
 
 exports.getAddProduct = (req, res, next) => {
+
   res.render("admin/edit-product", {
     docTitle: "Library",
     btnTitle: "Submit",
     labelTitle: "Title",
-    path: "/admin/edit-product",
+    path: "/admin/add-product",
     editing: false,
-    isAuthenticated: req.session.isLoggedIn
 
   });
 };
@@ -28,11 +28,12 @@ exports.addProduct = async (req, res, next) => {
       imageUrl,
       price,
       description,
-      userId: req.user[0]
+      userId: req.user
     });
-    const object_id = await product.save();
-    console.log("Product created", object_id);
+    
+    const savedProd = await product.save();
     res.redirect("/");
+    console.log('Product has been saved' , savedProd);
   } catch (error) {
     console.log("Save operation failed ", error.message);
   }
@@ -54,7 +55,6 @@ exports.getEditProduct = async (req, res, next) => {
       path: "/admin/edit-product",
       editing: editMode,
       product: product,
-      isAuthenticated: req.session.isLoggedIn
 
     });
   } catch (error) {
@@ -70,6 +70,9 @@ exports.postEditProduct = async (req, res, next) => {
   const updatedDesc = req.body.description;
   try {
     const product = await Product.findById(prodId);
+    if(product.userId.toString() !== req.user._id.toString()){
+      return res.redirect('/')
+    }
     product.title = updatedTitle;
     product.price = updatedPrice;
     product.imageUrl = updatedImageUrl;
@@ -85,12 +88,11 @@ exports.postEditProduct = async (req, res, next) => {
 exports.getProducts = async (req, res, next) => {
   let products;
   try {
-    products = await Product.find();
+    products = await Product.find({userId : req.user._id});
     res.render("admin/products", {
       prods: products,
       docTitle: "Admin Products",
       path: "/admin/products",
-      isAuthenticated: req.session.isLoggedIn
     });
   } catch (error) {
     console.log("FETCH Error ", error.message);
@@ -100,7 +102,7 @@ exports.getProducts = async (req, res, next) => {
 exports.deleteProduct = async (req, res, next) => {
   const prodId = req.body.productId;
   try {
-    const product = await Product.findByIdAndRemove(prodId);
+    const product = await Product.deleteOne({_id: prodId, userId: req.user._id})
     console.log("Product deleted", product);
     res.redirect("/admin/products");
   } catch (error) {

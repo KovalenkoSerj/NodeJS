@@ -11,7 +11,6 @@ exports.getProducts = async (req, res, next) => {
       prods: products,
       docTitle: "All Products list",
       path: "/products ",
-      isAuthenticated: req.session.isLoggedIn
 
     });
   } catch (error) {
@@ -30,7 +29,6 @@ exports.getProductDetails = async (req, res, next) => {
       prods: product,
       docTitle: product.title,
       path: "/products",
-      isAuthenticated: req.session.isLoggedIn
 
     });
   } catch (error) {
@@ -45,7 +43,7 @@ exports.getIndex = async (req, res) => {
       prods: products,
       docTitle: "Shop",
       path: "/",
-      isAuthenticated: req.session.isLoggedIn
+
 
     });
   } catch (error) {
@@ -61,7 +59,6 @@ exports.getCart = async (req, res) => {
     path: "/cart",
     docTitle: "Your Cart",
     products: prods,
-    isAuthenticated: req.session.isLoggedIn
 
   });
   //   });
@@ -96,7 +93,7 @@ exports.postOrder = async (req, res) => {
     })
     const order = new Order({
       user: {
-        name: user.name,
+        email: user.email,
         userId: user
       },
       products: products
@@ -118,7 +115,6 @@ exports.getOrders = async (req, res) => {
     path: "/orders",
     pageTitle: "Your Orders",
     orders: order,
-    isAuthenticated: req.session.isLoggedIn
 
   })
 };
