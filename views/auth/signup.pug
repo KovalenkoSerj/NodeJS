@@ -9,13 +9,13 @@ block content
     main
         if errorMsg.length > 0
             p(class='user-message user-message--error') #{errorMsg}
-        form(action='/signup', method="POST", class='product-form')
+        form(action='/signup', method="POST", class='product-form', novalidate)
             .form-control
                 label(for="email") Email
-                input(type="email", name='email', id='email')
+                input(type="email", name='email', id='email',  value=`${oldInput.email}` class=`${validationErrors && validationErrors[0].param === 'email' ? 'invalid': ''}`)
                 label(for="password") Password
-                input(type="password", name='password', id='password')
+                input(type="password", name='password', id='password',  value=`${oldInput.password}` class=`${validationErrors && validationErrors[0].param === 'password' ? 'invalid': ''}`)
                 label(for="password_confirm") Confirm Password
-                input(type="password_confirm", name='password_confirm', id='password_confirm')
+                input(type="password", name='password_confirm', id='password_confirm',  value=`${oldInput.password_confirm}`)
                 input(type="hidden", name='_csrf' value=`${csrfToken}`)
                 button.btn(type='submit') SignUp 

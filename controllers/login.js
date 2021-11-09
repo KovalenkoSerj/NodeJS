@@ -3,10 +3,12 @@ const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer')
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 const crypto = require('crypto');
-
+const {
+  validationResult
+} = require('express-validator')
 const transport = nodemailer.createTransport(sendgridTransport({
   auth: {
-    api_key: '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',
+    api_key: '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',
   },
 }));
 
@@ -17,7 +19,12 @@ exports.login = (req, res, next) => {
     docTitle: "Login",
     btnTitle: "Submit",
     path: '/login',
-    errorMsg: req.flash('error')
+    errorMsg: req.flash('error'),
+    oldInput: {
+      email: '',
+      password: '',
+    },
+    validationErrors: []
 
 
   });
@@ -28,20 +35,57 @@ exports.signin = async (req, res, next) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+      return res.status(422).render("auth/login", {
+        docTitle: "Login",
+        btnTitle: "Submit",
+        path: '/login',
+        errorMsg: errors.array()[0].msg,
+        oldInput: {
+          email: email,
+          password: password,
+        },
+        validationErrors: errors.array()
+      });
+    }
 
     const user = await User.findOne({
       email,
     });
 
     if (!user) {
-      req.flash('error', 'Ivalid email/password.')
-      return res.redirect('/login');
+      // req.flash('error', 'Ivalid email/password.')
+      // return res.redirect('/login');
+      return res.status(422).render("auth/login", {
+        docTitle: "Login",
+        btnTitle: "Submit",
+        path: '/login',
+        errorMsg: 'Invalid Email/Password',
+        oldInput: {
+          email: email,
+          password: password,
+        },
+        validationErrors: []
+      });
     }
 
     const validatePassword = await bcrypt.compare(password, user.password);
     if (!validatePassword) {
-      req.flash('error', 'Ivalid email/password.')
-      return res.redirect('/login')
+      // req.flash('error', 'Ivalid email/password.')
+      // return res.redirect('/login')
+      return res.status(422).render("auth/login", {
+        docTitle: "Login",
+        btnTitle: "Submit",
+        path: '/login',
+        errorMsg: 'Invalid Email/Password',
+        oldInput: {
+          email: email,
+          password: password,
+        },
+        validationErrors: []
+      });
     }
 
     req.session.user = user;
@@ -81,13 +125,25 @@ exports.signup = async (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
     const password_confirm = req.body.password_confirm;
-    const userCheck = await User.findOne({
-      email: email
-    });
-    if (userCheck) {
-      req.flash('error', 'Email already exist')
-      return res.redirect('/signup')
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      console.log(errors.array())
+      return res.status(422).render("auth/signup", {
+        docTitle: "Login",
+        btnTitle: "Submit",
+        path: '/signup',
+        errorMsg: errors.array()[0].msg,
+        oldInput: {
+          email: email,
+          password: password,
+          password_confirm: req.body.password_confirm
+        },
+        validationErrors: errors.array()
+
+      });
     }
+
     const bcrptPass = await bcrypt.hash(password, 12);
 
     const user = await new User({
@@ -109,7 +165,7 @@ exports.signup = async (req, res, next) => {
     console.log('User Created ', createdUser)
 
   } catch (error) {
-    console.log('Error during signIn process ' + error.message)
+    console.log('Error during signIn process ', error.message)
   }
 }
 
@@ -119,7 +175,12 @@ exports.signupPage = async (req, res, next) => {
     docTitle: "Login",
     btnTitle: "Submit",
     path: '/signup',
-    errorMsg: req.flash('error')
+    errorMsg: req.flash('error'),
+    oldInput: {
+      email: '',
+      password: '',
+      password_confirm: ''
+    }
 
   })
 }
@@ -217,12 +278,12 @@ exports.postUpdatePassword = async (req, res, next) => {
     user.resetTokenExpire = undefined;
     user.save();
     res.redirect('/login')
-  
+
 
     console.log('User updated')
 
   } catch (error) {
     console.log(' Something went wrong during update user password', error.message);
-  } 
+  }
 
 }

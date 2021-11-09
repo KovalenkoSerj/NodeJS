@@ -8,7 +8,9 @@ block styles
 block content
 
 	main
-		if editing === 'true'
+		if errorMsg
+			p(class='user-message user-message--error') #{errorMsg}
+		if editing === 'true' || hasError === 'true'
 			form(action='/admin/edit-product', method="POST", class='product-form')
 				.form-control
 					label(for="title") #{labelTitle}

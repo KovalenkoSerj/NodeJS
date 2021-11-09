@@ -12,9 +12,9 @@ block content
         form(action='/login', method="POST", class='product-form')
             .form-control
                 label(for="email") Email
-                input(type="email", name='email', id='email')
+                input(type="email", name='email', id='email', value=`${oldInput.email}`, class=`${validationErrors[0] && validationErrors[0].param === 'email' ? 'invalid': ''}`)
                 label(for="password") Password
-                input(type="password", name='password', id='password')
+                input(type="password", name='password', id='password', value=`${oldInput.password}`, class=`${validationErrors[0] && validationErrors[0].param === 'password' ? 'invalid': ''}`)
                 input(type="hidden", name='_csrf' value=`${csrfToken}`)
                 button.btn(type='submit') Login
     .centered
