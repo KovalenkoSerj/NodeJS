@@ -10,7 +10,7 @@ block content
 		h1 #{prods.title}
 		hr
 		div 
-			img(src=prods.imageUrl, alt=prods.title, width=240, height=320)
+			img(src='/' + prods.imageUrl, alt=prods.title, width=240, height=320)
 		h2 Price : #{prods.price}
 		p Description : #{prods.description}
 		if isAuthenticated

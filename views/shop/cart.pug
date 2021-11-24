@@ -3,15 +3,16 @@ extends ../layout/main-layout
 
 block content 
     main 
+        input(type="hidden", name='_csrf' value=`${csrfToken}`)
         if products.length > 0
             .grid
                 each product in products
                     article.card.product-item    
                         header.card__header 
                             h1.product__title #{product.productId.title}
-                        div.card__image
+                        .card__image
                             img(src=product.productId.imageUrl, width='150' height='300' alt="A book")
-                        div.card-contet
+                        .card-contet
                             h2.product__price Price: #{product.productId.price} $
                             p.product__description Description: #{product.productId.description}
                             p Quantity: #{product.quantity}
@@ -20,12 +21,14 @@ block content
                             form(action="/cart-delete-item" method="POST")
                                 button.btn(type="submit") Delete From Cart
                                 input(type="hidden" name='productId' value=product.productId._id)
-                                
-
+                                input(type="hidden", name='_csrf' value=`${csrfToken}`)
             hr                
-            div.centered                    
+            .centered                    
                 form(action="/create-order" method="POST")
                     button.btn(type='submit') Order Now!
+                    input(type="hidden", name='_csrf' value=`${csrfToken}`)
+
         else
             h1 Cart is empty
-        input(type="hidden", name='_csrf' value=`${csrfToken}`)            
+            input(type="hidden", name='_csrf' value=`${csrfToken}`)
+            

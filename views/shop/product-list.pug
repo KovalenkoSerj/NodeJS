@@ -5,6 +5,7 @@ block styles
     link(rel="stylesheet", href="/css/product.css")
 block content
     main
+        input(type="hidden", name='_csrf' value=`${csrfToken}`)
         if prods.length > 0
             .grid
                 each product in prods
@@ -22,6 +23,8 @@ block content
                                 form(action="/cart" method="POST")
                                     button.btn(type="submit") Add to cart
                                     input(type="hidden" name='productId' value=product._id)
+                                    input(type="hidden", name='_csrf' value=`${csrfToken}`) 
+            include ../layout/pagination.pug                     
+                                   
         else 
             h1 No products
-        input(type="hidden", name='_csrf' value=`${csrfToken}`)

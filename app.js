@@ -8,15 +8,38 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
+const multer = require('multer')
+
 
 const MONGODB_URI = 'mongodb+srv://serhii:rootroot@cluster0.n6xnp.mongodb.net/shop?retryWrites=true&w=majority';
+
+
+
 const app = express();
 const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: 'sessions',
 });
 
+
+
 const csrfProtect = csrf()
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg' || file.mimetype === 'image/png') {
+    cb(null, true)
+  } else {
+    cb(null, false)
+  }
+}
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'images')
+  },
+  filename: (req, file, cb) => {
+    cb(null, Math.random() + '-' + file.originalname)
+  }
+})
+
 app.set("view engine", "pug");
 app.set("views", "views");
 
@@ -30,9 +53,16 @@ app.use(
     extended: false
   })
 );
+app.use(multer({
+  storage: fileStorage,
+  fileFilter: fileFilter
+}).single('image'))
+
 
 
 app.use(express.static(path.join(__dirname, "public")));
+app.use('/images' , express.static(path.join(__dirname, "images")));
+
 
 app.use(session({
   secret: 'my secret',
@@ -50,13 +80,7 @@ app.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken();
   next();
 })
-// app.use(async (req, res, next) => {
-//   const user = await User.find({
-//     email: 'qwer@qwer.com'
-//   });
-//   req.user = user;
-//   next()
-// })
+
 app.use(async (req, res, next) => {
   if (!req.session.user) {
     return next()
@@ -66,7 +90,7 @@ app.use(async (req, res, next) => {
     req.user = user;
     next()
   } catch (error) {
-    console.log('Error during login user ', error.message)
+    console.log('Error during finding user ', error.message)
   }
 
 })
@@ -77,6 +101,13 @@ app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 app.use(loginRoutes);
 
+// app.use(errorPageController.get505)
+// app.use(errorPageController.errorPage)
+
+// app.use((error, req, res, next) => {
+//   res.redirect('/500')
+//   res.status(error.httpStatus)
+// })
 
 async function connect() {
   try {
@@ -90,6 +121,3 @@ async function connect() {
 }
 
 connect();
-
-
-app.use(errorPageController.errorPage)

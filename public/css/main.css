@@ -136,3 +136,26 @@ main {
   padding: 10px;
   text-align: center;
 }
+
+
+.pagination {
+  text-align: center;
+  margin-top: 3rem;
+
+}
+
+.pagination a {
+  text-decoration: none;
+  color: #00695c;
+  border: 1px solid #00695c;
+  margin: 0 0.3rem;
+  padding: 0.5rem;
+
+}
+
+.pagination a:hover,
+.pagination a:active,
+.pagination a.active {
+  background: #00695c;
+  color: white
+}

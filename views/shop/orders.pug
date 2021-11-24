@@ -5,22 +5,20 @@ block styles
     link(rel="stylesheet", href="/css/product.css")
 block content
     main
+        input(type="hidden", name='_csrf' value=`${csrfToken}`)
         if orders.length > 0
             .grid
                 each order in orders
                     article.card.product-item    
+                        a(href='/orders/' + order._id) Invoice   
                         header.card__header 
                             //- p #{order.createdAt.getMonth() + 1}/#{order.createdAt.getDate()}/#{order.createdAt.getFullYear()} - #{order.createdAt.toLocaleTimeString()}
                             each p in order.products 
                                 h1 Title: #{p.product.title}
                                 img(src=p.product.imageUrl width=250 height=300)
                                 p Price: #{p.product.price}  
-                                p Quantity #{p.quantity}
-        
-                     
-                                
-                           
+                                p Quantity #{p.quantity}  
+                  
         else 
             h1 Nothing Here
     
-        input(type="hidden", name='_csrf' value=`${csrfToken}`)
