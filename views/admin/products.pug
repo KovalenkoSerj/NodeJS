@@ -1,5 +1,4 @@
 extends ../layout/main-layout.pug
-
 block styles 
     link(rel="stylesheet", href="/css/main.css")
     link(rel="stylesheet", href="/css/product.css")
@@ -18,11 +17,12 @@ block content
                             p.product__description Description: #{product.description}
                         .card__actions
                             a.btn(href="/admin/edit-product/" + product._id + '?edit=true') Edit
-                            form(action="/admin/delete-product", method="POST") 
-                                button.btn(type='submit') Delete
-                                input(type="hidden", name='productId', value=product._id)
-                                input(type="hidden", name='_csrf' value=`${csrfToken}`)
+                            //- form(action="/admin/delete-product", method="POST") 
+                            button.btn(type='button' onclick='deleteProduct(this)') Delete
+                            input(type="hidden", name='productId', value=product._id)
+                            input(type="hidden", name='_csrf' value=`${csrfToken}`)
         else 
             h1 No products
             input(type="hidden", name='_csrf' value=`${csrfToken}`)
+
 

@@ -29,7 +29,7 @@ exports.addProduct = async (req, res, next) => {
   const image = req.file
   const price = req.body.price;
   const description = req.body.description;
-  if(!image) {
+  if (!image) {
     return res.status(422).render("admin/edit-product", {
       docTitle: "Add Product",
       btnTitle: "Add Product",
@@ -121,7 +121,7 @@ exports.postEditProduct = async (req, res, next) => {
   const updatedDesc = req.body.description;
   const errors = validationResult(req);
 
-  if (!errors.isEmpty()){
+  if (!errors.isEmpty()) {
     return res.status(422).render("admin/edit-product", {
       docTitle: "Edit Product",
       btnTitle: "Update Product",
@@ -147,9 +147,9 @@ exports.postEditProduct = async (req, res, next) => {
     product.title = updatedTitle;
     product.price = updatedPrice;
     product.description = updatedDesc;
-    if(image){
+    if (image) {
       fileHelper.deleteFile(product.imageUrl);
-      
+
       product.imageUrl = image.path
     }
     const object_id = await product.save();
@@ -179,9 +179,9 @@ exports.getProducts = async (req, res, next) => {
 exports.deleteProduct = async (req, res, next) => {
 
   try {
-    const prodId = req.body.productId;
+    const prodId = req.params.productId;
     const prod = await Product.findById(prodId);
-    if(!prod){
+    if (!prod) {
       return next(new Error('Product not found'));
     }
     const product = await Product.deleteOne({
@@ -189,10 +189,11 @@ exports.deleteProduct = async (req, res, next) => {
       userId: req.user._id
     })
     fileHelper.deleteFile(prod.imageUrl);
-    
+
     console.log("Product deleted", product);
-    res.redirect("/admin/products");
+    // res.redirect("/admin/products");
+    res.status(200).json({message: 'Success delete product'})
   } catch (error) {
-    console.log("Error during deleting product", error.message);
+    res.status(500).json({message: 'Deleting product failed'})
   }
 };

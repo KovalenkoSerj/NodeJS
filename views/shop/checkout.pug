@@ -1,0 +1,37 @@
+extends ../layout/main-layout
+
+
+block content 
+    main 
+        .grid
+            each product in products
+                article.card.product-item    
+                    header.card__header 
+                        h1.product__title #{product.productId.title}
+                    .card__image
+                        img(src=product.productId.imageUrl, width='150' height='300' alt="A book")
+                    .card-contet
+                        h2.product__price Price: #{product.productId.price} $
+                        p.product__description Description: #{product.productId.description}
+                        p Quantity: #{product.quantity}
+                    .card__actions
+                        a(href="/products/" + product.productId._id, class="btn") Details 
+                        //- form(action="/cart-delete-item" method="POST")
+                            button.btn(type="submit") Delete From Cart
+                            input(type="hidden" name='productId' value=product.productId._id)
+                            input(type="hidden" name='_csrf' value=`${csrfToken}`)
+                        a(href="/checkout" class='btn') Order Now!
+        h2(class='centered') Total Sum: #{totalSum}$
+        .centered
+            button(id='order-btn' class='btn') ORDER! 
+            script(src="https://js.stripe.com/v3/") 
+            script.
+                var stripe = Stripe('pk_test_51JzeHuGVAze2qc5sLLyhop6aOYY9XJ6msulmJIBukFOASApzpHWCzlgJyrRIq1q3f2dglCxtCxf0eHDJ9jsxWnO800fZOW9lQX');
+                var orderBtn = document.getElementById('order-btn');
+                orderBtn.addEventListener('click', function(){
+                    return stripe.redirectToCheckout({sessionId: #{sessionId}})
+                    
+                })
+
+
+
